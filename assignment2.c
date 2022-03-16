@@ -6,7 +6,7 @@
 int *enterNumbers(int *numbersEntered, int *fArray);
 int *displayNumbers(int *display);
 void sortNumber(int[]);
-void compareArray(int[], int[]);
+void compareArray(int *userArray, int *winningNumbers);
 void frequencyNumbers(int *fArray);
 
 int main()
@@ -42,6 +42,11 @@ int main()
             numbers = enterNumbers(userArray, fArray);
 
         } // end if
+        else if (num == 2)
+        {
+            displaying = displayNumbers(numbers);
+
+        } // end else if
         else if (num == 3)
         {
             sortNumber(numbers);
@@ -57,17 +62,9 @@ int main()
 
             frequencyNumbers(fArray);
 
-            // for (i = 0; i < 12; i++)
-            // {
-            //     printf("%d", *(frequency + i));
-            //     // printf("%d",sortArray[i]);
-            // }
 
         } // end else if
-        // for (i = 0; i < 20; i++)
-        // {
-        //     sortArray[i] = *(frequency + i);
-        // }
+        
 
     } while (num != 6 && d != (num >= 'a' && num <= 'z'));
     printf("Ending game\n");
@@ -135,50 +132,44 @@ void sortNumber(int array4[])
     printf("\n");
 }
 
-void compareArray(int a[], int b[])
+void compareArray(int *userArray, int *winningNumbers)
 {
-    int c[10];
+    
     int i, j;
     int k = 0;
     int x, count;
     int Length = 0;
 
-    for (i = 0; i < 10; i++)
+    for (i = 0; i < 6; i++)
     {
-        for (j = 0; j < 10; j++)
+        for (k = 0; k < 6; k++)
         {
-            if (a[i] == b[j])
+            if (*(winningNumbers + k) == *(userArray + i))
             {
-                count = 0;
-                for (x = 0; x < k; x++)
-                {
-                    if (a[i] == c[x])
-                        count++;
-                }
-                if (count == 0)
-                {
-                    c[k] = a[i];
-                    k++;
-                }
-            }
-        }
-    }
+                count++;
 
-    // printf("%d",k);
+            } // end if
 
-    if (k == 6)
+        } // end for
+
+    } // end out for
+
+
+    // printf("%d",count);
+
+    if (count == 6)
     {
         printf("You won the Jackpot!\n");
     }
-    else if (k == 5)
+    else if (count == 5)
     {
         printf("You won a new Car\n");
     }
-    else if (k == 4)
+    else if (count == 4)
     {
         printf("You won a Weekend Away!\n");
     }
-    else if (k == 3)
+    else if (count == 3)
     {
         printf("You won a Cinema Pass!\n");
     }
