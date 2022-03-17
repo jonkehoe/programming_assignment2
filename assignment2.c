@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #define SIZE 6
+#define SIZEA 43
 
 int *enterNumbers(int *numbersEntered, int *fArray);
 int *displayNumbers(int *display);
@@ -20,7 +21,7 @@ int main()
     int *frequency;
     int freq2;
     int fArray[43] = {0};
-    int num;
+    int num, count = 0;
     int freqSum = 0;
     int sortArray[12];
 
@@ -40,30 +41,62 @@ int main()
             k = 0;
 
             numbers = enterNumbers(userArray, fArray);
+            count++;
+            
 
         } // end if
         else if (num == 2)
         {
-            displaying = displayNumbers(numbers);
-
+            if (count > 0)
+            {
+                displaying = displayNumbers(numbers);
+            }
+            else
+            {
+                printf("Need to press option 1 first\n");
+            }
+        
         } // end else if
         else if (num == 3)
         {
-            sortNumber(numbers);
+            if (count > 0)
+            {
+                sortNumber(numbers);
+            }
+            else
+            {
+                printf("Need to press option 1 first\n");
+            }
 
         } // end else if
         else if (num == 4)
         {
-            compareArray(numbers, winningNumbers);
+            if (count > 0)
+            {
+                compareArray(numbers, winningNumbers);
+            }
+            else
+            {
+                printf("Need to press option 1 first\n");
+            }
 
         } // end else if
         else if (num == 5)
         {
-
-            frequencyNumbers(fArray);
-
+            if (count > 0)
+            {
+                frequencyNumbers(fArray);
+            }
+            else
+            {
+                printf("Need to press option 1 first\n");
+            }
 
         } // end else if
+        else
+        {
+            printf("Input error try again, Only numbers allowed\n");
+        }
         
 
     } while (num != 6 && d != (num >= 'a' && num <= 'z'));
@@ -76,13 +109,34 @@ int main()
 int *enterNumbers(int *numbersEntered, int *fArray)
 {
     int temp;
-    int i;
+    int i,k;
     
 
-    printf("Enter 6 numbers : ");
+    printf("Enter 6 numbers from 1 to 42 and cant be the same number twice : ");
     for (int i = 0; i < 6; i++)
     {
         scanf("%d", &numbersEntered[i]);
+
+        if (*(numbersEntered + i) > 0 && *(numbersEntered + i) < 43)
+        {
+            for (k = 0; k < i; k++)
+            {
+                if (*(numbersEntered + i) == *(numbersEntered + k))
+                {
+                    printf("You cant enter the same number twice\n");
+                    break;
+                    
+                } // end if
+
+            } // end loop for same number
+        }
+        else
+        {
+            printf("Numbers must be greater than 1 and less than 42\n");
+            printf("Returning to menu\n");
+            break;
+        } // end else
+        
         temp = *(numbersEntered + i);
 
         *(fArray + temp) = *(fArray + temp) + 1;
@@ -135,11 +189,10 @@ void sortNumber(int array4[])
 void compareArray(int *userArray, int *winningNumbers)
 {
     
-    int i, j;
-    int k = 0;
-    int x, count;
+    int i, k, x, count;
     int Length = 0;
 
+    // Bubble Sort Algorithm
     for (i = 0; i < 6; i++)
     {
         for (k = 0; k < 6; k++)
@@ -147,37 +200,37 @@ void compareArray(int *userArray, int *winningNumbers)
             if (*(winningNumbers + k) == *(userArray + i))
             {
                 count++;
-
             } // end if
 
         } // end for
 
     } // end out for
 
-
+    // Used for Debug
     // printf("%d",count);
 
     if (count == 6)
     {
         printf("You won the Jackpot!\n");
-    }
+    } // end if
     else if (count == 5)
     {
         printf("You won a new Car\n");
-    }
+    } // end else if
     else if (count == 4)
     {
         printf("You won a Weekend Away!\n");
-    }
+    } // end else if
     else if (count == 3)
     {
         printf("You won a Cinema Pass!\n");
-    }
+    } // end else if
     else
     {
-        printf("\nsorry you didnt win anything\n");
-    }
-}
+        printf("\nsorry you didnt win anything\n\n");
+    } // end else 
+
+} // end compareArray
 
 void frequencyNumbers(int *fArray)
 {
@@ -185,10 +238,11 @@ void frequencyNumbers(int *fArray)
 
     for (int i = 0; i < 43; i++)
     {
-        if (*(fArray + i) != 0)//how many times a certain number has been inputted
+        if (*(fArray + i) != 0)
         {
-            printf("\nNumber %d has been selected %d times\n", i, *(fArray + i));
+            printf("\nNumber %d ---- %d times\n", i, *(fArray + i));
         } // end if
 
     } // end for
-} // end function optionE
+
+} // end frequencyNumbers
